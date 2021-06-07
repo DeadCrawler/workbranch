@@ -21,7 +21,9 @@ public class Container {
     public String[] upData;                     //here is data for update method stored
     public String curTable = "";               //current table name to work with, used in sql requests
     public String colName;                      //column name, took from Table ListSelectionModel 52 stroke
+    public String row;
     InsertObj insertObj;
+    public int mode;                                   //price mode
 
     ModelLayer modelLayer;
     View view;
@@ -37,7 +39,7 @@ public class Container {
 
     ////////////////////////////////////////MAIN METHODS
     public void insert(){
-        modelLayer.createCustomer(curTable, insertData);
+        modelLayer.createCustomer(curTable, insertData, mode);
         clearInsertData();
     }
 
@@ -49,7 +51,7 @@ public class Container {
     public void clear(){modelLayer.clear(curTable);redraw();}
 
     public void update(){
-        modelLayer.update(curTable, colName, upData[0], upData[1]);
+        modelLayer.update(curTable, colName, headers[0], row, upData[1], upData[0]);
         redraw();
     }
 
@@ -74,8 +76,12 @@ public class Container {
         }else upData[0] = data;
     }
 
+
     public String getColName(int col){
         return colName = headers[col];
+    }
+    public String getRowNumb(int row){
+        return this.row = datalist.get(row).getFirst();
     }
 
     public void clearInsertData() {
@@ -86,15 +92,23 @@ public class Container {
     public void setInsertData(String key, String value, boolean bool) {
         if(value.equals("")||value == null){
             if(bool){
-                insertObj = new InsertObj(key, "true");
+                insertObj = new InsertObj(key, true);
             }else{
-                insertObj = new InsertObj(key, "false");
+                insertObj = new InsertObj(key, false);
             }
             insertData.add(insertObj);
         }else {
             insertObj = new InsertObj(key, value);
             insertData.add(insertObj);
         }
+    }
+
+    public boolean blacklist (String userId){
+        return modelLayer.isBlacklist(userId);
+    }
+
+    public void price(String userId){
+        mode = modelLayer.isPrice(userId);
     }
 
 

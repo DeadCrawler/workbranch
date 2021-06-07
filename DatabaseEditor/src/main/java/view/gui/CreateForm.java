@@ -4,13 +4,13 @@
 package view.gui;
 
 import view.listeners.Container;
+import view.listeners.CreateListener;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
-
-import static utils.Const.DATE;
+import static utils.Const.*;
 
 public class CreateForm {
     Container container;
@@ -66,24 +66,8 @@ public class CreateForm {
 
         JButton saveBtn = new JButton("Save");
         saveBtn.setBounds(10, 115, 90, 30);
-        saveBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(bool.isSelected()){
-                    container.setInsertData((String) headers.getSelectedItem(), inputField.getText(), bool.isSelected());
-                    headers.removeItemAt(headers.getSelectedIndex());
-                }else if(bool_false.isSelected()){
-                    container.setInsertData((String) headers.getSelectedItem(), inputField.getText(), bool.isSelected());
-                    headers.removeItemAt(headers.getSelectedIndex());
-                } else if(inputField.getText().trim().equals("") || inputField.getText() == null){
-                    infoLabel.setText("No data to add");
-                }else {
-                    container.setInsertData((String) headers.getSelectedItem(), inputField.getText(), bool.isSelected());
-                    headers.removeItemAt(headers.getSelectedIndex());
-                    inputField.setText("");
-                }
-            }
-        });
+        ActionListener createListener = new CreateListener(frame, container, infoLabel, inputField, headers, bool, bool_false);
+        saveBtn.addActionListener(createListener);
 
         JButton okBtn = new JButton("Ok");
         okBtn.setBounds(110, 115, 90,30);
@@ -95,6 +79,7 @@ public class CreateForm {
                 frame.dispose();
             }
         });
+
 
         buttonGroup.add(bool);
         buttonGroup.add(bool_false);

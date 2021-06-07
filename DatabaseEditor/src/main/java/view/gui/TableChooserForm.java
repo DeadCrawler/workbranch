@@ -24,7 +24,7 @@ public class TableChooserForm {
         JButton openTableBtn = new JButton("Open");
         openTableBtn.setBounds(185, 20, 80, 30);
 
-        ActionListener tableListener = new ChoseTableListener(tableComboBox, container);
+        ActionListener tableListener = new ChoseTableListener(tableComboBox, container, jFrame);
         openTableBtn.addActionListener(tableListener);
 
         jFrame.add(tableComboBox);

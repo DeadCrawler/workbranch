@@ -59,12 +59,13 @@ public class Table {
                         Data = (String) table.getValueAt(row[i], columns[j]);
                         container.setUpData(Data, false);
                         container.getColName(columns[j]);
+                        container.getRowNumb(row[i]);
                     } }
                 System.out.println("Table element selected is: " + Data);
                 System.out.println("row = " + Arrays.toString(row) + "\ncolumn = " + Arrays.toString(columns));
             }
         });
-
+        frame.setTitle(container.curTable);
         jScrollPane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane.setBounds(0,0,800,600);
         frame.add(jScrollPane);

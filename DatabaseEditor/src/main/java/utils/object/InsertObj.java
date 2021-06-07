@@ -2,19 +2,33 @@ package utils.object;
 
 import java.util.Objects;
 
-public class InsertObj {
+public class InsertObj <E> {
     String key;
     String value;
-
+    boolean bool;
 
     public InsertObj(String key, String value){
         this.key = key;
         this.value = value;
     }
 
+    public InsertObj(String key, boolean bool){
+        this.key = key;
+        this.bool = bool;
+    }
+
+
 
     public String[] getMem() {
-        return new String[]{key, value};
+        if (value == null || value.equals("")) {
+            return new String[]{key, String.valueOf(bool)};
+        } else {
+            return new String[]{key, value};
+        }
+    }
+
+    public String getKey(){
+        return key;
     }
 
     @Override

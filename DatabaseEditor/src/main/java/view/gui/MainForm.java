@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 public class MainForm implements View {
     JFrame frame;
     JMenuBar jMenuBar;
-    JPopupMenu jPopupMenu;
     MenuBar menuBar;
 
     public MainForm(Container container){
@@ -22,13 +21,9 @@ public class MainForm implements View {
         jMenuBar.add(menuBar.createDeleteMenu());
         jMenuBar.add(menuBar.createHelpMenu());
 
-
-
-
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setTitle("MainForm");
+        frame.setTitle("Hello There");
         frame.setResizable(false);
-
 
         frame.setBounds(600,400, 800,600);
         frame.setLayout(null);

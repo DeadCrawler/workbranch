@@ -108,9 +108,60 @@ public class DBLayer implements ModelLayer {
         }
     }
 
+    @Override
+    public boolean isBlacklist(String userId) {
+        conn = mysql.getConnection();
+        String sql = String.format(B_LIST, userId);
+        try {
+            statement = conn.createStatement(
+                    ResultSet.TYPE_FORWARD_ONLY,
+                    ResultSet.CONCUR_UPDATABLE);
+
+            resultSet = statement.executeQuery(sql);
+            while (resultSet.next()){
+                return resultSet.getBoolean("b_blacklist");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+            try { conn.close(); } catch(SQLException se) { /*can't do anything */ }
+            try { statement.close(); } catch(SQLException se) { /*can't do anything */ }
+            try { resultSet.close(); } catch(SQLException se) { /*can't do anything */ }
+        }
+        return false;
+    }
+
+    public int isPrice(String userId){
+        conn = mysql.getConnection();
+        String sql = String.format(P_LIST, userId);
+        int i = 0;
+        try {
+            statement = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY,
+                    ResultSet.CONCUR_UPDATABLE);
+
+            resultSet = statement.executeQuery(sql);
+            while (resultSet.next()){
+                i++;
+                if(i >= 5){
+                    return 1;
+                }else if(i >= 10){
+                    return 2;
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+            try { conn.close(); } catch(SQLException se) { /*can't do anything */ }
+            try { statement.close(); } catch(SQLException se) { /*can't do anything */ }
+            try { resultSet.close(); } catch(SQLException se) { /*can't do anything */ }
+        }
+        return 0;
+    }
+
+
     //insert method
     @Override
-    public void createCustomer(String curTable, ArrayList<InsertObj> insertData) {
+    public void createCustomer(String curTable, ArrayList<InsertObj> insertData, int mode) {
         conn = mysql.getConnection();
         int rows = insertData.size();
         String sql = String.format(INSERT_DATA[rows-1], curTable, Utils.headersToString(insertData));
@@ -123,7 +174,9 @@ public class DBLayer implements ModelLayer {
 
                 if(getType(getMem[0], curTable).equals("int")){
                     preparedStatement.setInt(i, Integer.parseInt(getMem[1]));
-                }else {
+                }else if(getType(getMem[0], curTable).equals("tinyint")){
+                    preparedStatement.setBoolean(i, Boolean.parseBoolean(getMem[1]));
+                } else {
                     preparedStatement.setString(i, getMem[1]);
                 }
             }
@@ -144,14 +197,17 @@ public class DBLayer implements ModelLayer {
 
     //method to update
     @Override
-    public void update(String curTable, String column, String data, String update) {
+    public void update(String curTable, String columnName, String rowName, String row, String update, String data) {
         conn = mysql.getConnection();
-        String sql = String.format(UPDATE, curTable, column, column, data);
+
+        String sql = String.format(UPDATE, curTable, columnName, rowName, row, columnName, data);
 
         try {
             preparedStatement = conn.prepareStatement(sql);
             if(getType(data, curTable).equals("int")){
                 preparedStatement.setInt(1,Integer.parseInt(update));
+            }else if(getType(data, curTable).equals("tinyint")) {
+                preparedStatement.setBoolean(1, Boolean.parseBoolean(update));
             }else {
                 preparedStatement.setString(1, update);
             }
@@ -201,7 +257,8 @@ public class DBLayer implements ModelLayer {
         }
     }
 
-///this is private method to define type of data
+
+    ///this is private method to define type of data
     private String getType(String key, String curTable){
         conn = mysql.getConnection();
         String sql = String.format(GET_DATA_TYPE, curTable, key);

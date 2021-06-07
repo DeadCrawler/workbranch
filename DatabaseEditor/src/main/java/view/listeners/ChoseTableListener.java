@@ -7,11 +7,12 @@ import java.awt.event.ActionListener;
 public class ChoseTableListener implements ActionListener {
     JComboBox comboBox;
     Container container;
+    JFrame frame;
 
-    public ChoseTableListener(JComboBox tableComboBox, Container container) {
+    public ChoseTableListener(JComboBox tableComboBox, Container container, JFrame jFrame) {
         comboBox = tableComboBox;
         this.container = container;
-
+        frame = jFrame;
     }
 
     @Override
@@ -19,5 +20,6 @@ public class ChoseTableListener implements ActionListener {
         String tableName = String.valueOf(comboBox.getSelectedItem());
         container.setCurTable(tableName);
         container.redraw();
+        frame.dispose();
     }
 }

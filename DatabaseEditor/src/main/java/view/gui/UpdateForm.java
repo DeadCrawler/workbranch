@@ -58,11 +58,11 @@ public class UpdateForm {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(bool.isSelected()){
-                    container.setUpData("true", true);
+                    container.setUpData("1", true);
                     container.update();
                     frame.dispose();
                 }else if(bool_false.isSelected()){
-                    container.setUpData("false", true);
+                    container.setUpData("0", true);
                     container.update();
                     frame.dispose();
                 }else if(inputField.getText().trim().equals("") || inputField.getText().trim() == null){

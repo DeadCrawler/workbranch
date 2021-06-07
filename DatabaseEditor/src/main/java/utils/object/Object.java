@@ -11,6 +11,8 @@ public class Object {
         count = 0;
     }
 
+    public String getFirst(){return mem[0];}
+
     public String[] getMem() {
         return mem;
     }

@@ -34,6 +34,7 @@ public class MenuBar {
     public JMenu createInsertMenu(){
         JMenu createMenu = new JMenu("Insert");
         JMenuItem create = new JMenuItem("Create");
+        JMenuItem classUp = new JMenuItem("Pre-Booking");
         create.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -45,6 +46,8 @@ public class MenuBar {
                 }
             }
         });
+
+
         createMenu.add(create);
         return createMenu;
     }
